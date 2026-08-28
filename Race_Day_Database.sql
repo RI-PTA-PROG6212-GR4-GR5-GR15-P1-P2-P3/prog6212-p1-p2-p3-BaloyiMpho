@@ -19,6 +19,22 @@ CREATE TABLE [USER] (
     is_active BIT DEFAULT 1
 );
 GO
+    -- 8. ENROLMENT Table
+
+CREATE TABLE ENROLMENT (
+    enrolment_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,  -- FK to User (Participant)
+    race_id INT NOT NULL,
+    category_id INT NOT NULL,  -- References CATEGORY table
+    enrolment_date DATETIME DEFAULT GETDATE(),
+    enrolment_status VARCHAR(20) DEFAULT 'Pending',  
+    payment_status VARCHAR(20) DEFAULT 'Unpaid',  
+    amount_paid DECIMAL(8,2),
+    payment_date DATETIME,
+    created_by INT NOT NULL  
+);
+GO
+
     --  Creating the database
 
 CREATE DATABASE Race_Day;
