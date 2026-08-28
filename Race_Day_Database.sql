@@ -81,6 +81,12 @@ CREATE TABLE HORSE (
     trainer_id INT,
     owner_id INT,
     registration_date DATE,
-    created_by INT NOT NULL,  -- FK to User (Organiser)
+    created_by INT NOT NULL, 
     created_at DATETIME DEFAULT GETDATE()
 );
+GO
+
+ALTER TABLE HORSE ADD CONSTRAINT FK_Horse_User 
+    FOREIGN KEY (created_by) REFERENCES [USER](user_id);
+GO
+
