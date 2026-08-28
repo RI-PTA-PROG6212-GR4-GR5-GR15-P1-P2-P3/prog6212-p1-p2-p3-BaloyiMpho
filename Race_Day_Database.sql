@@ -89,4 +89,18 @@ GO
 ALTER TABLE HORSE ADD CONSTRAINT FK_Horse_User 
     FOREIGN KEY (created_by) REFERENCES [USER](user_id);
 GO
+-- 6. JOCKEY Table
+
+CREATE TABLE JOCKEY (
+    jockey_id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    date_of_birth DATE,
+    license_number VARCHAR(50) UNIQUE,
+    experience_years INT,
+    weight_kg DECIMAL(5,2),
+    created_by INT NOT NULL,  -- FK to User (Organiser)
+    created_at DATETIME DEFAULT GETDATE()
+);
+GO
 
