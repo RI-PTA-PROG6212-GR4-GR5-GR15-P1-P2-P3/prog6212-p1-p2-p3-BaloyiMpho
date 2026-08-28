@@ -34,6 +34,19 @@ CREATE TABLE USERROLE (
     user_id INT NOT NULL,
     role_id INT NOT NULL,
     assigned_at DATETIME DEFAULT GETDATE(),
-    assigned_by INT  -- FK to User who assigned the role
+    assigned_by INT 
 );
+GO
+
+-- Add Foreign Keys for USERROLE
+ALTER TABLE USERROLE ADD CONSTRAINT FK_UserRole_User 
+    FOREIGN KEY (user_id) REFERENCES [USER](user_id);
+GO
+
+ALTER TABLE USERROLE ADD CONSTRAINT FK_UserRole_Role 
+    FOREIGN KEY (role_id) REFERENCES ROLE(role_id);
+GO
+
+ALTER TABLE USERROLE ADD CONSTRAINT FK_UserRole_AssignedBy 
+    FOREIGN KEY (assigned_by) REFERENCES [USER](user_id);
 GO
