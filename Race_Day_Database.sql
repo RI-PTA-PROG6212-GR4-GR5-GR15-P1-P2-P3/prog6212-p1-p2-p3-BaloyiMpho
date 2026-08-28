@@ -216,5 +216,44 @@ GO
 ALTER TABLE JOCKEY ADD CONSTRAINT FK_Jockey_User 
     FOREIGN KEY (created_by) REFERENCES [USER](user_id);
 GO
+-- 7. RACEHORSE Table (Junction Table)
+CREATE TABLE RACEHORSE (
+    racehorse_id INT IDENTITY(1,1) PRIMARY KEY,
+    race_id INT NOT NULL,
+    horse_id INT NOT NULL,
+    category_id INT NOT NULL, 
+    jockey_id INT,
+    participant_id INT NOT NULL,  
+    gate_position INT,
+    finishing_position INT,
+    race_time_seconds DECIMAL(8,3),
+    odds DECIMAL(5,2),
+    weight_carried DECIMAL(5,2),
+    entry_status VARCHAR(20) DEFAULT 'Registered',  
+    entered_at DATETIME DEFAULT GETDATE(),
+    updated_by INT  
+);
+GO
+-- Add Foreign Keys for RACEHORSE
+ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_Race 
+    FOREIGN KEY (race_id) REFERENCES RACE(race_id);
+GO
+
+ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_Horse 
+    FOREIGN KEY (horse_id) REFERENCES HORSE(horse_id);
+GO
+
+ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_Jockey 
+    FOREIGN KEY (jockey_id) REFERENCES JOCKEY(jockey_id);
+GO
+
+ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_Participant 
+    FOREIGN KEY (participant_id) REFERENCES [USER](user_id);
+GO
+
+ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_UpdatedBy 
+    FOREIGN KEY (updated_by) REFERENCES [USER](user_id);
+GO
+
 
 
