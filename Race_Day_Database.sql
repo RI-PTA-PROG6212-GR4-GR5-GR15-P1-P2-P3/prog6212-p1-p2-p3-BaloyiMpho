@@ -99,8 +99,12 @@ CREATE TABLE JOCKEY (
     license_number VARCHAR(50) UNIQUE,
     experience_years INT,
     weight_kg DECIMAL(5,2),
-    created_by INT NOT NULL,  -- FK to User (Organiser)
+    created_by INT NOT NULL, 
     created_at DATETIME DEFAULT GETDATE()
 );
 GO
+ALTER TABLE JOCKEY ADD CONSTRAINT FK_Jockey_User 
+    FOREIGN KEY (created_by) REFERENCES [USER](user_id);
+GO
+
 
