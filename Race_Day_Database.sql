@@ -27,3 +27,13 @@ CREATE TABLE ROLE (
     created_at DATETIME DEFAULT GETDATE()
 );
 GO
+-- 3. USERROLE Table (Junction Table)
+
+CREATE TABLE USERROLE (
+    userrole_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    role_id INT NOT NULL,
+    assigned_at DATETIME DEFAULT GETDATE(),
+    assigned_by INT  -- FK to User who assigned the role
+);
+GO
