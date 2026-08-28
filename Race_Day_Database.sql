@@ -70,3 +70,17 @@ GO
 ALTER TABLE RACE ADD CONSTRAINT FK_Race_User 
     FOREIGN KEY (created_by) REFERENCES [USER](user_id);
 GO
+-- 5 Horse Table
+CREATE TABLE HORSE (
+    horse_id INT IDENTITY(1,1) PRIMARY KEY,
+    horse_name VARCHAR(100) NOT NULL,
+    breed VARCHAR(50),
+    age INT,
+    color VARCHAR(30),
+    gender VARCHAR(10),
+    trainer_id INT,
+    owner_id INT,
+    registration_date DATE,
+    created_by INT NOT NULL,  -- FK to User (Organiser)
+    created_at DATETIME DEFAULT GETDATE()
+);
