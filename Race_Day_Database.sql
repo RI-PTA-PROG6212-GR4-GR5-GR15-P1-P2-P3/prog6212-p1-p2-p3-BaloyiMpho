@@ -66,3 +66,7 @@ CREATE TABLE RACE (
     updated_at DATETIME DEFAULT GETDATE()
 );
 GO
+--Altering the Race table
+ALTER TABLE RACE ADD CONSTRAINT FK_Race_User 
+    FOREIGN KEY (created_by) REFERENCES [USER](user_id);
+GO
