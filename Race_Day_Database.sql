@@ -50,3 +50,19 @@ GO
 ALTER TABLE USERROLE ADD CONSTRAINT FK_UserRole_AssignedBy 
     FOREIGN KEY (assigned_by) REFERENCES [USER](user_id);
 GO
+-- 4. RACE Table
+CREATE TABLE RACE (
+    race_id INT IDENTITY(1,1) PRIMARY KEY,
+    race_name VARCHAR(100) NOT NULL,
+    race_date DATE NOT NULL,
+    race_time TIME NOT NULL,
+    venue VARCHAR(100) NOT NULL,
+    distance_meters INT NOT NULL,
+    race_type VARCHAR(50) NOT NULL,
+    prize_pool DECIMAL(12,2),
+    status VARCHAR(20) DEFAULT 'Scheduled',  
+    created_by INT NOT NULL,  
+    created_at DATETIME DEFAULT GETDATE(),
+    updated_at DATETIME DEFAULT GETDATE()
+);
+GO
