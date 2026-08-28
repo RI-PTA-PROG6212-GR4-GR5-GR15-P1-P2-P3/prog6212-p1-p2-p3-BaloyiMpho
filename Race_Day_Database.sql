@@ -270,6 +270,22 @@ GO
 ALTER TABLE RACEHORSE ADD CONSTRAINT FK_RaceHorse_UpdatedBy 
     FOREIGN KEY (updated_by) REFERENCES [USER](user_id);
 GO
+-- 8. ENROLMENT Table
+
+CREATE TABLE ENROLMENT (
+    enrolment_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,  -- FK to User (Participant)
+    race_id INT NOT NULL,
+    category_id INT NOT NULL,  -- References CATEGORY table
+    enrolment_date DATETIME DEFAULT GETDATE(),
+    enrolment_status VARCHAR(20) DEFAULT 'Pending',  -- 'Pending', 'Confirmed', 'Withdrawn'
+    payment_status VARCHAR(20) DEFAULT 'Unpaid',  -- 'Unpaid', 'Paid', 'Refunded'
+    amount_paid DECIMAL(8,2),
+    payment_date DATETIME,
+    created_by INT NOT NULL  -- FK to User (Participant or Organiser)
+);
+GO
+
 
 
 
