@@ -416,7 +416,12 @@ In accordance with academic integrity guidelines, I disclose that AI tools were 
 
 **Statement of Academic Integrity:** I confirm that all design decisions reflect my understanding of the RaceDay system. I have reviewed and validated all AI-generated content. The final submission represents my own work and analysis.
 
-**Tools Used:** Claude (Anthropic) - AI Assistant
+**Tools Used:** 
+SSMS 
+Mermaid live editor
+MS Word
+Text Editor
+
 
 ---
 
