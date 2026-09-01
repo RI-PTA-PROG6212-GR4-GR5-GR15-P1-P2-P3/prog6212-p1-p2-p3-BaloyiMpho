@@ -103,6 +103,7 @@ Run these verification queries to confirm everything is working:
 
 
 -- Get all users with their roles
+```sql
 SELECT 
     u.user_id,
     u.username,
