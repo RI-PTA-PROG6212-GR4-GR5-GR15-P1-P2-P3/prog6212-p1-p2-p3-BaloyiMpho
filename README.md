@@ -56,7 +56,31 @@ The **RaceDay System** is a comprehensive event management database designed for
 
 ## Installation Guide
 
-### IMPORTANT: Follow These Steps in Order
+### IMPORTANT: Follow These Instructions in Order
+
+## Common Errors and Solutions
+1
+ERROR
+Database 'RaceDayDB' does not exist
+
+Cause
+
+Database not created
+
+Solution
+
+Run the first SQL Command in the Race_Day_Database.sql
+2
+ERROR
+Invalid object name 'USER'
+
+Cause
+Table not created in correct order
+
+
+Solution
+Create parent tables first
+
 
 To avoid errors, **you must create the database first** and then **create tables one by one in the correct order**.
 
@@ -122,15 +146,7 @@ GO
 
 ---
 
-## Common Errors and Solutions
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| Database 'RaceDayDB' does not exist | Database not created | Run Step 1 first |
-| Invalid object name 'USER' | Table not created in correct order | Create parent tables first |
-| Foreign key constraint | Referenced table doesn't exist | Check table creation order |
-| Permission denied | Insufficient privileges | Run as db_owner or sysadmin |
-| Column name not found | Wrong column name or table | Check spelling and use correct table |
 
 ---
 
