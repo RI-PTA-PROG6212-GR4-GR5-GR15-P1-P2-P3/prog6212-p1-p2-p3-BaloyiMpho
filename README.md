@@ -58,31 +58,18 @@ The **RaceDay System** is a comprehensive event management database designed for
 
 ### IMPORTANT: Follow These Instructions in Order
 
-## Common Errors and Solutions
-1
-ERROR
-Database 'RaceDayDB' does not exist
+##Recommended Table Creation Order
+To avoid most foreign key and "Invalid object name" errors, create tables in dependency order:
 
-Cause
+Create the RaceDayDB database.
+Select/use the RaceDayDB database.
+Create independent parent tables first.
+Create the USER table and other tables that depend on the parent tables.
+Create child tables containing foreign keys.
+Insert the data after all required tables have been created.
+Create additional constraints, indexes, views, or stored procedures last.
 
-Database not created
-
-Solution
-
-Run the first SQL Command in the Race_Day_Database.sql
-2
-ERROR
-Invalid object name 'USER'
-
-Cause
-Table not created in correct order
-
-
-Solution
-Create parent tables first
-
-
-To avoid errors, **you must create the database first** and then **create tables one by one in the correct order**.
+ **you must create the database first** and then **create tables one by one in the correct order**.
 
 ---
 
