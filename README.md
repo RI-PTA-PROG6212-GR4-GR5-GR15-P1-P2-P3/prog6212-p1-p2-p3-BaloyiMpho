@@ -70,53 +70,9 @@ To avoid errors, **you must create the database first** and then **create tables
 
 ---
 
-### Step 1: Create the Database
-
-Open SSMS and run this command first:
-
-```sql
--- Create the database
-CREATE DATABASE RaceDayDB;
-GO
-
--- Switch to the new database
-USE RaceDayDB;
-GO
-
--- Verify you're in the correct database
-SELECT DB_NAME() AS CurrentDatabase;
-GO
-```
-
-**Expected Output:** `RaceDayDB`
-
----
-
-### Step 2: Create Tables in Correct Order
-
-> **IMPORTANT:** Tables must be created in the correct order to avoid foreign key errors.
-
-#### Recommended Table Creation Order:
-
-1. **USER** (Parent table)
-2. **ROLE** (Parent table)
-3. **USERROLE** (References USER and ROLE)
-4. **EVENT** (Parent table)
-5. **CATEGORY** (References EVENT)
-6. **ENROLMENT** (References USER, EVENT, CATEGORY)
-7. **PARTICIPANT_EVENT** (References EVENT, USER, CATEGORY)
-8. **WEATHER** (References EVENT)
-9. **ROUTE** (References EVENT)
-10. **ROUTE_WAYPOINT** (References ROUTE)
-11. **RESULT** (References PARTICIPANT_EVENT, USER, EVENT, CATEGORY)
-
----
-
-### Step 3: Insert Sample Data
 
 
-
-### Step 4: Verify Your Installation
+###  Verify Your Installation
 
 Run these verification queries to confirm everything is working:
 
