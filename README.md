@@ -114,132 +114,13 @@ GO
 
 ### Step 3: Insert Sample Data
 
-After all tables are created, insert the sample data:
 
-```sql
--- Insert Roles
-INSERT INTO ROLE (role_name, description) VALUES 
-('Organiser', 'Can create, edit, and delete events, manage categories, capture results'),
-('Participant', 'Can browse events, enrol, view own enrolments and results');
-GO
-
--- Insert Users
-INSERT INTO [USER] (username, email, password_hash, first_name, last_name, date_of_birth, phone, is_active) VALUES 
-('alice_organiser', 'alice@raceday.com', 'hashed_password_123', 'Alice', 'Johnson', '1985-05-15', '555-0101', 1),
-('bob_participant', 'bob@raceday.com', 'hashed_password_456', 'Bob', 'Smith', '1990-08-20', '555-0102', 1),
-('carol_participant', 'carol@raceday.com', 'hashed_password_789', 'Carol', 'Williams', '1992-11-10', '555-0103', 1),
-('dave_organiser', 'dave@raceday.com', 'hashed_password_101', 'Dave', 'Brown', '1988-03-25', '555-0104', 1);
-GO
-
--- Assign Roles
-INSERT INTO USERROLE (user_id, role_id, assigned_by) VALUES 
-(1, 1, 1),  -- Alice = Organiser
-(2, 2, 1),  -- Bob = Participant
-(3, 2, 1),  -- Carol = Participant
-(4, 1, 4);  -- Dave = Organiser
-GO
-
--- Insert Events
-INSERT INTO EVENT (event_name, event_date, event_time, venue, location, distance_km, event_type, entry_fee, status, created_by) VALUES 
-('Cape Town Marathon', '2026-10-15', '06:00:00', 'Cape Town Stadium', 'Cape Town, Western Cape', 42.2, 'Running', 450.00, 'Scheduled', 1),
-('Comrades Ultra Marathon', '2026-06-11', '05:30:00', 'Pietermaritzburg City Hall', 'Pietermaritzburg, KwaZulu-Natal', 89.0, 'Running', 750.00, 'Scheduled', 4),
-('Cape Town Cycle Tour', '2026-03-08', '06:30:00', 'Grand Parade', 'Cape Town, Western Cape', 109.0, 'Cycling', 350.00, 'Scheduled', 1),
-('Park Run - Greenpoint', '2026-01-20', '08:00:00', 'Greenpoint Park', 'Cape Town, Western Cape', 5.0, 'Running', 0.00, 'Completed', 1);
-GO
-
--- Insert Categories
-INSERT INTO CATEGORY (event_id, category_name, min_age, max_age, gender_restriction, max_participants, entry_fee, created_by) VALUES 
-(1, 'Men 18-34', 18, 34, 'Male', 1000, 450.00, 1),
-(1, 'Women 18-34', 18, 34, 'Female', 800, 450.00, 1),
-(1, 'Men 35-49', 35, 49, 'Male', 1200, 450.00, 1),
-(1, 'Women 35-49', 35, 49, 'Female', 1000, 450.00, 1),
-(1, 'Men 50+', 50, 99, 'Male', 500, 450.00, 1),
-(1, 'Women 50+', 50, 99, 'Female', 400, 450.00, 1),
-(2, 'Open', 18, 99, 'Any', 5000, 750.00, 4),
-(3, 'Elite Men', 18, 40, 'Male', 100, 350.00, 1),
-(3, 'Elite Women', 18, 40, 'Female', 80, 350.00, 1),
-(3, 'Open Men', 18, 99, 'Male', 10000, 350.00, 1),
-(3, 'Open Women', 18, 99, 'Female', 8000, 350.00, 1),
-(4, 'Open', 8, 99, 'Any', 1000, 0.00, 1);
-GO
-
--- Insert Enrolments
-INSERT INTO ENROLMENT (user_id, event_id, category_id, enrolment_status, payment_status, amount_paid, created_by) VALUES 
-(2, 1, 1, 'Confirmed', 'Paid', 450.00, 2),
-(3, 1, 2, 'Pending', 'Unpaid', NULL, 3),
-(2, 2, 7, 'Confirmed', 'Paid', 750.00, 2),
-(3, 4, 12, 'Confirmed', 'Paid', 0.00, 3);
-GO
-
--- Insert Participant Events
-INSERT INTO PARTICIPANT_EVENT (event_id, user_id, category_id, bib_number, entry_status, entered_at) VALUES 
-(1, 2, 1, 1024, 'Registered', '2026-01-15 10:00:00'),
-(1, 3, 2, 2048, 'Registered', '2026-01-16 11:30:00'),
-(2, 2, 7, 3072, 'Registered', '2026-01-20 09:00:00'),
-(4, 3, 12, 4096, 'Completed', '2026-01-10 08:00:00');
-GO
-
--- Insert Weather Forecasts
-INSERT INTO WEATHER (event_id, forecast_date, temperature, humidity, wind_speed, wind_direction, precipitation_chance, conditions) VALUES 
-(1, '2026-10-15', 22.5, 65.0, 15.0, 'SE', 10.0, 'Partly Cloudy'),
-(2, '2026-06-11', 18.0, 70.0, 10.0, 'SW', 20.0, 'Cloudy'),
-(3, '2026-03-08', 24.0, 60.0, 20.0, 'S', 5.0, 'Sunny'),
-(4, '2026-01-20', 26.0, 55.0, 12.0, 'NW', 0.0, 'Clear');
-GO
-
--- Insert Routes
-INSERT INTO ROUTE (event_id, route_name, distance_km, terrain_type, elevation_gain, elevation_loss, route_description, start_latitude, start_longitude, end_latitude, end_longitude) VALUES 
-(1, 'Cape Town Marathon Route', 42.2, 'Road', 350, 350, 'Scenic route along the Cape Town coastline', -33.9027, 18.4171, -33.9027, 18.4171),
-(2, 'Comrades Marathon Route', 89.0, 'Road', 800, 800, 'The ultimate human race - Pietermaritzburg to Durban', -29.6006, 30.3794, -29.8587, 31.0218),
-(3, 'Cape Town Cycle Tour Route', 109.0, 'Road', 550, 550, 'Iconic Cape Town cycle tour around the peninsula', -33.9249, 18.4241, -33.9249, 18.4241);
-GO
-
--- Insert Route Waypoints
-INSERT INTO ROUTE_WAYPOINT (route_id, latitude, longitude, sequence_order, waypoint_type, description) VALUES 
-(1, -33.9027, 18.4171, 1, 'Start', 'Cape Town Stadium Start'),
-(1, -33.9100, 18.4200, 5, 'Water Point', 'Water Point 1 - 5km'),
-(1, -33.9200, 18.4100, 10, 'Checkpoint', 'Checkpoint - 10km'),
-(1, -33.9027, 18.4171, 20, 'Finish', 'Cape Town Stadium Finish');
-GO
-```
-
----
 
 ### Step 4: Verify Your Installation
 
 Run these verification queries to confirm everything is working:
 
-```sql
--- List all tables
-SELECT TABLE_NAME 
-FROM INFORMATION_SCHEMA.TABLES 
-WHERE TABLE_TYPE = 'BASE TABLE'
-ORDER BY TABLE_NAME;
-GO
 
--- Check all tables have data
-SELECT 'USER' AS TableName, COUNT(*) AS RowCount FROM [USER]
-UNION ALL
-SELECT 'ROLE', COUNT(*) FROM ROLE
-UNION ALL
-SELECT 'USERROLE', COUNT(*) FROM USERROLE
-UNION ALL
-SELECT 'EVENT', COUNT(*) FROM EVENT
-UNION ALL
-SELECT 'CATEGORY', COUNT(*) FROM CATEGORY
-UNION ALL
-SELECT 'ENROLMENT', COUNT(*) FROM ENROLMENT
-UNION ALL
-SELECT 'PARTICIPANT_EVENT', COUNT(*) FROM PARTICIPANT_EVENT
-UNION ALL
-SELECT 'WEATHER', COUNT(*) FROM WEATHER
-UNION ALL
-SELECT 'ROUTE', COUNT(*) FROM ROUTE
-UNION ALL
-SELECT 'ROUTE_WAYPOINT', COUNT(*) FROM ROUTE_WAYPOINT
-UNION ALL
-SELECT 'RESULT', COUNT(*) FROM RESULT;
-GO
 
 -- Get all users with their roles
 SELECT 
@@ -354,65 +235,9 @@ INNER JOIN [USER] u ON e.created_by = u.user_id;
 GO
 ```
 
-### View Enrolments with Participant and Event Details
-```sql
-SELECT 
-    en.enrolment_id,
-    u.first_name + ' ' + u.last_name AS participant,
-    e.event_name,
-    c.category_name,
-    en.enrolment_status,
-    en.payment_status,
-    en.amount_paid
-FROM ENROLMENT en
-INNER JOIN [USER] u ON en.user_id = u.user_id
-INNER JOIN EVENT e ON en.event_id = e.event_id
-INNER JOIN CATEGORY c ON en.category_id = c.category_id;
-GO
-```
 
-### View Participants in an Event
-```sql
-SELECT 
-    pe.participant_event_id,
-    u.first_name + ' ' + u.last_name AS participant,
-    pe.bib_number,
-    pe.entry_status,
-    pe.entered_at
-FROM PARTICIPANT_EVENT pe
-INNER JOIN [USER] u ON pe.user_id = u.user_id
-WHERE pe.event_id = 1;
-GO
-```
-
-### Get Event with Route Details
-```sql
-SELECT 
-    e.event_name,
-    r.route_name,
-    r.distance_km,
-    r.terrain_type,
-    r.elevation_gain,
-    r.elevation_loss,
-    COUNT(rw.waypoint_id) AS waypoint_count
-FROM EVENT e
-INNER JOIN ROUTE r ON e.event_id = r.event_id
-LEFT JOIN ROUTE_WAYPOINT rw ON r.route_id = rw.route_id
-GROUP BY e.event_name, r.route_name, r.distance_km, r.terrain_type, r.elevation_gain, r.elevation_loss;
-GO
-```
 
 ---
-
-## AI Usage Disclosure
-
-In accordance with academic integrity guidelines, I disclose that AI tools were used in the following capacities:
-
-| Area | AI Role | My Contribution |
-|------|---------|-----------------|
-| SQL Syntax | Assisted with proper SQL syntax and formatting | Validated data types, constraints, and relationships |
-| Schema Structure | Helped organize tables and relationships | Determined business rules and cardinalities |
-| Documentation | Structured the README format | Reviewed all technical content for accuracy |
 
 **Statement of Academic Integrity:** I confirm that all design decisions reflect my understanding of the RaceDay system. I have reviewed and validated all AI-generated content. The final submission represents my own work and analysis.
 
