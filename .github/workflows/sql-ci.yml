@@ -10,26 +10,36 @@ on:
 jobs:
   test-database:
     runs-on: ubuntu-latest
-
-    services:
-      mssql:
-        image: mcr.microsoft.com/mssql/server:2019-latest
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: YourStrong!Passw0rd
-        options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q 'SELECT 1'"
-          --health-interval 10s
-          --health-timeout 10s
-          --health-retries 10
-          --memory 2g
-        ports:
-          - 1433:1433
-
+    
+    # DON'T use services - use Docker directly instead
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install sqlcmd
+      - name: Start SQL Server in Docker
+        run: |
+          docker run -d \
+            --name sqlserver \
+            -e 'ACCEPT_EULA=Y' \
+            -e 'SA_PASSWORD=YourStrong!Passw0rd' \
+            -p 1433:1433 \
+            mcr.microsoft.com/mssql/server:2019-latest
+
+      - name: Wait for SQL Server to be ready
+        run: |
+          echo "Waiting for SQL Server to start..."
+          for i in {1..60}; do
+            if docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "SELECT 1" &>/dev/null; then
+              echo " SQL Server is ready!"
+              exit 0
+            fi
+            echo " Attempt $i/60 - waiting..."
+            sleep 5
+          done
+          echo " SQL Server failed to start"
+          docker logs sqlserver
+          exit 1
+
+      - name: Install sqlcmd on runner
         run: |
           curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
           curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
@@ -37,42 +47,30 @@ jobs:
           sudo ACCEPT_EULA=Y apt-get install -y mssql-tools unixodbc-dev
           echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
-      - name: Wait for SQL Server
-        run: |
-          echo "Waiting for SQL Server to start..."
-          for i in {1..60}; do
-            if /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "SELECT 1" &>/dev/null; then
-              echo " SQL Server is ready!"
-              exit 0
-            fi
-            echo "⏳ Attempt $i/60 - waiting..."
-            sleep 5
-          done
-          echo " SQL Server failed to start"
-          exit 1
-
       - name: Create Database
         run: |
           /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "CREATE DATABASE RaceDayDB;"
           echo " Database created"
 
-      - name: Run SQL Script
+      - name: Run Race Day Database Script
         run: |
           echo " Running Race_Day_Database.sql..."
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -I -i documents/Race_Day_Database.sql
-          echo "Script executed successfully"
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -I -i Documents/Race_Day_Database.sql
+          echo " Script executed successfully"
 
       - name: Verify Tables
         run: |
-          echo "Verifying tables..."
+          echo " Verifying tables..."
           /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -Q "
           SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' ORDER BY TABLE_NAME;"
 
-      - name: Verify Data
+      - name: Verify Sample Data
         run: |
           echo "Checking sample data..."
           /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -Q "
           SELECT 'Users' AS TableName, COUNT(*) AS Count FROM [USER]
+          UNION ALL
+          SELECT 'Roles', COUNT(*) FROM ROLE
           UNION ALL
           SELECT 'Events', COUNT(*) FROM EVENT
           UNION ALL
@@ -81,3 +79,7 @@ jobs:
           SELECT 'Enrolments', COUNT(*) FROM ENROLMENT
           UNION ALL
           SELECT 'Participants', COUNT(*) FROM PARTICIPANT_EVENT;"
+
+      - name: Show SQL Server logs if failure
+        if: failure()
+        run: docker logs sqlserver
