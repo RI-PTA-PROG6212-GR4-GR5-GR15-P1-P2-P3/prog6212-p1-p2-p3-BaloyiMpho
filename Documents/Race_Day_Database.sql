@@ -5,7 +5,10 @@
 -- Note When Testing for creating Tables create 
 --them one by one as shown on the ReadME.md document
 -- ============================================================
-
+CREATE DATABASE RaceDayDB;
+GO
+USE RaceDayDB;
+GO
 -- 1. USER Table
 CREATE TABLE [USER] (
     user_id INT IDENTITY(1,1) PRIMARY KEY,
