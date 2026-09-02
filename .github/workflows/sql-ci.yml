@@ -1,1 +1,69 @@
+name: Race Day Database CI
 
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  test-database:
+    runs-on: ubuntu-latest
+
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: YourStrong!Passw0rd
+        options: >-
+          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 1433:1433
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install sqlcmd
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools unixodbc-dev
+          echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+
+      - name: Run Race Day Database Script
+        run: |
+          echo "Creating Race Day database and tables..."
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -I -i documents/Race_Day_Database.sql
+
+      - name: Verify Tables Created
+        run: |
+          echo "Verifying all tables exist..."
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "
+          USE master;
+          SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' ORDER BY TABLE_NAME;"
+
+      - name: Verify Sample Data
+        run: |
+          echo "Checking sample data..."
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "
+          SELECT COUNT(*) AS TotalUsers FROM [USER];
+          SELECT COUNT(*) AS TotalEvents FROM EVENT;
+          SELECT COUNT(*) AS TotalCategories FROM CATEGORY;
+          SELECT COUNT(*) AS TotalEnrolments FROM ENROLMENT;
+          SELECT COUNT(*) AS TotalParticipants FROM PARTICIPANT_EVENT;"
+
+      - name: Run Custom Verification
+        run: |
+          echo "Running custom queries..."
+          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "
+          -- Show all events with their categories
+          SELECT e.event_name, c.category_name, c.max_participants, c.entry_fee
+          FROM EVENT e
+          INNER JOIN CATEGORY c ON e.event_id = c.event_id
+          ORDER BY e.event_name, c.category_name;"
