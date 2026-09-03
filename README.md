@@ -51,7 +51,7 @@ The **RaceDay System** is a comprehensive event management database designed for
 
 ## Entity Relationship Diagram (ERD)
 
-![prog6212-p1-p2-p3-BaloyiMpho](Documents/ERDscreenshot.png)
+![prog6212-p1-p2-p3-BaloyiMpho](Documents/ERDscreenshot2.png)
 
 
 ## Installation Guide
