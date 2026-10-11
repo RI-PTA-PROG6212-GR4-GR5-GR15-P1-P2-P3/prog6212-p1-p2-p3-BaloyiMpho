@@ -4053,11 +4053,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Student\\Downloads\\Race-Day-Event\\Race-Day-Event-main\\Race_Day\\Race_Day\\Race_Day.csproj",
+      "projectUniqueName": "C:\\Users\\Student\\Documents\\GitHub\\prog6212-p1-p2-p3-BaloyiMpho\\Race_Day\\Race_Day\\Race_Day.csproj",
       "projectName": "Race_Day",
-      "projectPath": "C:\\Users\\Student\\Downloads\\Race-Day-Event\\Race-Day-Event-main\\Race_Day\\Race_Day\\Race_Day.csproj",
+      "projectPath": "C:\\Users\\Student\\Documents\\GitHub\\prog6212-p1-p2-p3-BaloyiMpho\\Race_Day\\Race_Day\\Race_Day.csproj",
       "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Student\\Downloads\\Race-Day-Event\\Race-Day-Event-main\\Race_Day\\Race_Day\\obj\\",
+      "outputPath": "C:\\Users\\Student\\Documents\\GitHub\\prog6212-p1-p2-p3-BaloyiMpho\\Race_Day\\Race_Day\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

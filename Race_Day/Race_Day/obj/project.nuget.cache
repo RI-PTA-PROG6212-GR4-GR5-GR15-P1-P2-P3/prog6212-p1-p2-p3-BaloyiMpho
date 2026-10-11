@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jRvqaqeHup8=",
+  "dgSpecHash": "ngt7X/riAak=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Student\\Downloads\\Race-Day-Event\\Race-Day-Event-main\\Race_Day\\Race_Day\\Race_Day.csproj",
+  "projectFilePath": "C:\\Users\\Student\\Documents\\GitHub\\prog6212-p1-p2-p3-BaloyiMpho\\Race_Day\\Race_Day\\Race_Day.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Student\\.nuget\\packages\\azure.core\\1.41.0\\azure.core.1.41.0.nupkg.sha512",
     "C:\\Users\\Student\\.nuget\\packages\\azure.identity\\1.12.1\\azure.identity.1.12.1.nupkg.sha512",
