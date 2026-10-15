@@ -11,7 +11,6 @@ The **RaceDay System** is a comprehensive event management database designed for
 - User management with role-based access (Organisers and Participants)
 - Event creation and management
 - Participant enrolment in event categories
-- Weather forecasting for race day
 - Route and course management
 - Race results and performance tracking
 - Payment and enrolment status management
