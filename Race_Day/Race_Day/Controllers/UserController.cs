@@ -43,8 +43,8 @@ namespace Race_Day.Controllers
 
                 // server-controlled:
                 CreatedAt = DateTime.UtcNow,
-                LastLogin = DateTime.UtcNow,
-                IsActive = true,
+                LastLogin = DateTime.UtcNow,// TODO : Update this value when the user logs in
+                IsActive = true,// database, the user is active by default
             };
 
             dbcontext.users.Add(user);
@@ -56,7 +56,7 @@ namespace Race_Day.Controllers
         public IActionResult EditUserPorfile(Guid id, Edit_Existing_UserDTO editDTO)
         {
             var user = dbcontext.users.Find(id);
-            if (User == null) return NotFound($"No user was found with {id}");
+            if (user == null) return NotFound($"No user was found with {id}");
             if (editDTO.Username != null) user.Username = editDTO.Username;
             if (editDTO.FirstName != null) user.FirstName = editDTO.FirstName;
             if (editDTO.LastName != null) user.LastName = editDTO.LastName;
@@ -72,10 +72,10 @@ namespace Race_Day.Controllers
         [Route("{id:guid}")]
         public IActionResult RemoveUser(Guid id)
         {
-        var User = dbcontext.users.Find(id);
-            if (User == null) return NotFound($"No user was found with {id}");
+        var user = dbcontext.users.Find(id);
+            if (user == null) return NotFound($"No user was found with {id}");
 
-            dbcontext.users.Remove(User);
+            dbcontext.users.Remove(user);
             dbcontext.SaveChanges();
             return Ok("User was Deleted successfully");
         }

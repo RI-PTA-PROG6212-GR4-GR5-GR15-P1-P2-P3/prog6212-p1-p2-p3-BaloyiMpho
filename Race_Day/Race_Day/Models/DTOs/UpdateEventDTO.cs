@@ -2,6 +2,7 @@
 {
     public class UpdateEventDTO
     {
+
         public required string EventName { get; set; }
         public required DateOnly EventDate { get; set; }
         public required DateTime Now { get; set; }

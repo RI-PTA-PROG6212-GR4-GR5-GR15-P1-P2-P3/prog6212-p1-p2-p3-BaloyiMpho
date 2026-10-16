@@ -14,8 +14,7 @@ namespace Race_Day.Controllers
     {
         public readonly ApplicationDbcontext dbcontext;
 
-        public string EventStatus { get; private set; }
-
+       
         public EventsController(ApplicationDbcontext dbcontext)
         {
             this.dbcontext = dbcontext;
@@ -37,6 +36,7 @@ namespace Race_Day.Controllers
 
         
         [HttpPost]
+
         public IActionResult CreateEvent(NewEventDTO newEventDTO)
         {
             
@@ -68,9 +68,10 @@ namespace Race_Day.Controllers
                 newEvent
             );
         }
-        [HttpPut]
-        [Route("{id:guid}")]
-        public IActionResult UpdateEvent(Guid id, UpdateEventDTO updatedEventDTO)
+       
+        [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Admin,Organiser")]
+        public IActionResult UpdateEvent(Guid id, [FromBody] UpdateEventDTO updatedEventDTO)
         {
             var existingEvent = dbcontext.events.Find(id);
             if (existingEvent == null) return NotFound($"Event with id {id} was not found.");
@@ -85,8 +86,9 @@ namespace Race_Day.Controllers
             dbcontext.SaveChanges();
             return Ok("Event was updated successfully.");
         }
-        [HttpDelete]
-        [Route("{id:guid}")]
+     
+        [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin,Organiser")]
         public IActionResult RemoveEvent(Guid id)
         {
             var existingEvent = dbcontext.events.Find(id);
@@ -95,5 +97,6 @@ namespace Race_Day.Controllers
             dbcontext.SaveChanges();
             return Ok("Event was removed successfully.");
         }
+
     }
 }

@@ -38,7 +38,7 @@ namespace Race_Day.Controllers
 
                 // server-controlled
                 enrolment_status = "Pending",
-                payment_status = "Pending",
+                payment_status = "Paid",
                 paid_date = DateOnly.FromDateTime(DateTime.UtcNow)
 
             };

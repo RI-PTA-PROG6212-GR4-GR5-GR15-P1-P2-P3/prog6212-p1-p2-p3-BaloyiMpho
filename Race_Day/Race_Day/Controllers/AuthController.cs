@@ -30,9 +30,6 @@ namespace Race_Day.Controllers
             _hasher = hasher;
         }
 
-        // ------------------------------------------------------------
-        // POST: api/auth/register
-        // ------------------------------------------------------------
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO regDto)
         {
@@ -42,9 +39,9 @@ namespace Race_Day.Controllers
             var regUser = new UserAccount
             {
                 Email = regDto.Email,
-                PasswordHash = null, // will be set below
-                Role = "User"   // ignore regDto.Role — prevent self-promotion 
-                //Roles — Paticipant, Event Manager or Admin
+                PasswordHash = null, 
+                Role = "User"   //  regDto.Role — to prevent self-promotion 
+                //Roles — Paticipan, or User Not Admin
             };
 
             regUser.PasswordHash = _hasher.HashPassword(regUser, regDto.Password);
@@ -60,9 +57,7 @@ namespace Race_Day.Controllers
             });
         }
 
-        // ------------------------------------------------------------
-        // POST: api/auth/login
-        // ------------------------------------------------------------
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO logDto)
         {
@@ -91,9 +86,7 @@ namespace Race_Day.Controllers
             });
         }
 
-        // ------------------------------------------------------------
-        // GET: api/auth/me   (requires JWT)
-        // ------------------------------------------------------------
+        
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> Me()
@@ -114,9 +107,7 @@ namespace Race_Day.Controllers
             });
         }
 
-        // ------------------------------------------------------------
-        // Helper — private so Swagger ignores it
-        // ------------------------------------------------------------
+
         private string GenerateJwtToken(UserAccount user)
         {
             var key = new SymmetricSecurityKey(
@@ -141,5 +132,6 @@ namespace Race_Day.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }

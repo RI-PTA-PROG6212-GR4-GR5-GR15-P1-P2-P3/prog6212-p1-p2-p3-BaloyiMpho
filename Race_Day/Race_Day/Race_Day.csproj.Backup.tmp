@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+	  <PackageReference Include="xunit.v3" Version="*" />
+	  <PackageReference Include="xunit.runner.visualstudio" Version="*" />
   </ItemGroup>
 
   <ItemGroup>

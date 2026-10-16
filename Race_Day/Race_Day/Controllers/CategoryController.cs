@@ -39,11 +39,7 @@ namespace Race_Day.Controllers
 
             if (categoryDTO.MinAge > categoryDTO.MaxAge) 
                 return BadRequest("MinAge cannot be greater than MaxAge.");
-            //Minimizing Duplicate Events
-            var duplicate = dbcontext.categories.Any(c =>
-            c.EventId == categoryDTO.EventId &&
-            c.CategoryName == categoryDTO.CategoryName);
-            if(duplicate) return Conflict("A category with that name already exists for this event.");
+            
             var category = new Category
             {
                 EventId = categoryDTO.EventId,
@@ -67,11 +63,11 @@ namespace Race_Day.Controllers
         }
          [HttpPut]
          [Route("{id:guid}")] 
-         public IActionResult EditCatery(Edit_CategoryDTO edit_categoryDTO, Guid id) 
+         public IActionResult EditCategory(Edit_CategoryDTO edit_categoryDTO, Guid id) 
         {
             var category = dbcontext.categories.Find(id); 
             
-            if(category == null) return NotFound($"Caterogry using id: {id} was not found");
+            if(category == null) return NotFound($"Category using id: {id} was not found");
             if (edit_categoryDTO.CategoryName != null) category.CategoryName = edit_categoryDTO.CategoryName;
             if (edit_categoryDTO.MinAge != null) category.MinAge = edit_categoryDTO.MinAge.Value;
             if (edit_categoryDTO.MaxAge != null) category.MaxAge = edit_categoryDTO.MaxAge.Value;
