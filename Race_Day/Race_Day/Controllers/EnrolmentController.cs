@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Race_Day.Data;
 using Race_Day.Models;
 using Race_Day.Models.DTOs;
@@ -46,9 +48,54 @@ namespace Race_Day.Controllers
             dbcontext.SaveChanges();
             return Ok($"User with id {userId} has been enrolled in category {categoryId}.");
         }
-        /*[HttpGet]
         [HttpGet]
-        [HttpGet]
-        [HttpPatch]*/
+        [Authorize(Roles = "Admin")]
+        public IActionResult FindAllUsersEnrolled() 
+        {
+            var enrolled = dbcontext.enrolments.ToList();
+            return Ok(enrolled);
+        }
+        [HttpGet("{enrolmentId:guid}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult FindEnrolledUserById(Guid enrolmentId)
+        {
+            var enrolled = dbcontext.enrolments.Find(enrolmentId);
+            if (enrolled == null) return NotFound($"Enrolment with id {enrolmentId} was not found.");
+            return Ok(enrolled);
+        }
+
+
+        [HttpPatch]
+        [Authorize(Roles = "Admin")]
+        public IActionResult PatchEnrolment(Guid id, [FromBody] UpdateEnrolmentDTO dto) 
+        {
+            var enrolment = dbcontext.enrolments.Find(id);
+         
+            if (enrolment == null)
+                return NotFound(new { message = "Enrolment not found." });
+
+            if (dto.amount_paid.HasValue)
+            {
+                enrolment.amount_paid = dto.amount_paid.Value;
+                enrolment.paid_date = DateOnly.FromDateTime(DateTime.Today);
+                enrolment.enrolment_status = "Paid";
+            }
+            if (dto.enrolment_status != null)
+            {
+                enrolment.enrolment_status = dto.enrolment_status;
+            }
+
+            
+            if (enrolment.enrolment_date == default)
+            {
+                enrolment.enrolment_date = DateOnly.FromDateTime(DateTime.Today);
+            }
+
+
+            dbcontext.SaveChanges();
+
+            return Ok(new { message = "Enrolment updated successfully." });
+        }
+
     }
 }
