@@ -233,6 +233,8 @@ A robust **C# ASP.NET Core Web API** designed for managing race day events, part
 *   [.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0) - The framework used.
 *   [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) - ORM for database management.
 *   [GitHub Actions](https://github.com/features/actions) - CI/CD pipeline.
+
+
 ![prog6212-p1-p2-p3-BaloyiMpho](Documents/dotnet CI&CD Screenshot.png)
 
 
