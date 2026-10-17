@@ -216,7 +216,37 @@ Text Editor
 - SQL Foreign Key Constraints
 
 ---
+# Race Day API (prog6212-p1-p2-p3-BaloyiMpho)
 
+A robust **C# ASP.NET Core Web API** designed for managing race day events, participants, and results. This project includes comprehensive unit testing and an automated CI/CD pipeline using GitHub Actions.
+
+## Features
+
+*   **RESTful API:** Built with ASP.NET Core Web API.
+*   **Database Integration:** Uses Entity Framework Core for data access and migrations.
+*   **DTO Architecture:** Clean separation of concerns using Data Transfer Objects (e.g., `EditResultDTO`, `NewRoleDTO`).
+*   **Unit Testing:** Includes a dedicated test project (`Race_Day.Test`) to ensure code reliability.
+*   **Continuous Integration:** Automated build and test pipeline via GitHub Actions.
+
+##  Built With
+
+*   [.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0) - The framework used.
+*   [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) - ORM for database management.
+*   [GitHub Actions](https://github.com/features/actions) - CI/CD pipeline.
+![prog6212-p1-p2-p3-BaloyiMpho](Documents/dotnet CI&CD Screenshot.png)
+
+
+##  Project Structure
+
+The repository is organized into the following structure:
+```text
+├── .github/workflows/    # GitHub Actions CI pipeline (dotnet.yml)
+├── Race_Day/             # Main ASP.NET Core API Project
+│   ├── Controllers/      # API Endpoints
+│   ├── Migrations/       # EF Core Database Migrations
+│   └── Race_Day.csproj
+└── Race_Day.Test/        # Unit Test Project
+    └── Race_Day.Test.csproj
 ## License
 
 This project is for educational purposes only. All rights reserved.
