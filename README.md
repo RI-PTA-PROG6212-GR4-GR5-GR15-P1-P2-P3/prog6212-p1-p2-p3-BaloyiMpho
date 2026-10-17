@@ -235,7 +235,7 @@ A robust **C# ASP.NET Core Web API** designed for managing race day events, part
 *   [GitHub Actions](https://github.com/features/actions) - CI/CD pipeline.
 
 
-![prog6212-p1-p2-p3-BaloyiMpho](Documents/dotnet CI&CD Screenshot.png)
+![prog6212-p1-p2-p3-BaloyiMpho](Documents/dotnet_CI&CD_Screenshot.png)
 
 
 ##  Project Structure
