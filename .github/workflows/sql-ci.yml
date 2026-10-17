@@ -9,9 +9,8 @@ on:
 
 jobs:
   test-database:
-    runs-on: ubuntu-latest
-    
-    # DON'T use services - use Docker directly instead
+    runs-on: ubuntu-22.04
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,7 +19,7 @@ jobs:
           docker run -d \
             --name sqlserver \
             -e 'ACCEPT_EULA=Y' \
-            -e 'SA_PASSWORD=YourStrong!Passw0rd' \
+            -e 'MSSQL_SA_PASSWORD=YourStrong!Passw0rd' \
             -p 1433:1433 \
             mcr.microsoft.com/mssql/server:2019-latest
 
@@ -28,57 +27,55 @@ jobs:
         run: |
           echo "Waiting for SQL Server to start..."
           for i in {1..60}; do
-            if docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "SELECT 1" &>/dev/null; then
-              echo " SQL Server is ready!"
+            if docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+              -S localhost -U sa -P 'YourStrong!Passw0rd' -C -Q "SELECT 1" &>/dev/null; then
+              echo "SQL Server is ready!"
               exit 0
             fi
-            echo " Attempt $i/60 - waiting..."
+            echo "Attempt $i/60 - waiting..."
             sleep 5
           done
-          echo " SQL Server failed to start"
+          echo "SQL Server failed to start"
           docker logs sqlserver
           exit 1
 
-      - name: Install sqlcmd on runner
-        run: |
-          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-          curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
-          sudo apt-get update
-          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools unixodbc-dev
-          echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-
       - name: Create Database
         run: |
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -Q "CREATE DATABASE RaceDayDB;"
-          echo " Database created"
+          docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P 'YourStrong!Passw0rd' -C \
+            -Q "CREATE DATABASE RaceDayDB;"
+          echo "Database created"
 
       - name: Run Race Day Database Script
         run: |
-          echo " Running Race_Day_Database.sql..."
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -I -i Documents/Race_Day_Database.sql
-          echo " Script executed successfully"
+          echo "Running Race_Day_Database.sql..."
+          docker exec -i sqlserver /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P 'YourStrong!Passw0rd' -C -d RaceDayDB \
+            -I -i /dev/stdin < Documents/Race_Day_Database.sql
+          echo "Script executed successfully"
 
       - name: Verify Tables
         run: |
-          echo " Verifying tables..."
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -Q "
-          SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' ORDER BY TABLE_NAME;"
+          docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P 'YourStrong!Passw0rd' -C -d RaceDayDB \
+            -Q "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' ORDER BY TABLE_NAME;"
 
       - name: Verify Sample Data
         run: |
-          echo "Checking sample data..."
-          /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong!Passw0rd -d RaceDayDB -Q "
-          SELECT 'Users' AS TableName, COUNT(*) AS Count FROM [USER]
-          UNION ALL
-          SELECT 'Roles', COUNT(*) FROM ROLE
-          UNION ALL
-          SELECT 'Events', COUNT(*) FROM EVENT
-          UNION ALL
-          SELECT 'Categories', COUNT(*) FROM CATEGORY
-          UNION ALL
-          SELECT 'Enrolments', COUNT(*) FROM ENROLMENT
-          UNION ALL
-          SELECT 'Participants', COUNT(*) FROM PARTICIPANT_EVENT;"
+          docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+            -S localhost -U sa -P 'YourStrong!Passw0rd' -C -d RaceDayDB \
+            -Q "
+            SELECT 'Users' AS TableName, COUNT(*) AS Count FROM [USER]
+            UNION ALL
+            SELECT 'Roles', COUNT(*) FROM ROLE
+            UNION ALL
+            SELECT 'Events', COUNT(*) FROM EVENT
+            UNION ALL
+            SELECT 'Categories', COUNT(*) FROM CATEGORY
+            UNION ALL
+            SELECT 'Enrolments', COUNT(*) FROM ENROLMENT
+            UNION ALL
+            SELECT 'Participants', COUNT(*) FROM PARTICIPANT_EVENT;"
 
       - name: Show SQL Server logs if failure
         if: failure()
