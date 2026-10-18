@@ -9,7 +9,7 @@ using Race_Day.Test.TestHelpers;
 
 namespace Race_Day.Test
 {
-    public class EnrolTest
+    public class EventTest
     {
         [Fact]
         public void Create_NewEvent_ShouldReturnOk()
