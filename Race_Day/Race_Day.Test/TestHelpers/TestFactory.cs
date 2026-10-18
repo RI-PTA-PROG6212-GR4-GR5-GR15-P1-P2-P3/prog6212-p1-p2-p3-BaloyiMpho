@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +31,27 @@ namespace Race_Day.Test.TestHelpers
             var hasher = new PasswordHasher<UserAccount>();
             var controller = new AuthController(db, config, hasher);
 
+            return (controller, db);
+        }
+        public static (EventsController controller, ApplicationDbcontext db) CreateEventController()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbcontext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            var db = new ApplicationDbcontext(options);
+
+            var controller = new EventsController(db);
+
+            return (controller, db);
+        }
+        public static (EnrolmentController controller, ApplicationDbcontext db) CreateEnrolmentController()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbcontext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            var db = new ApplicationDbcontext(options);
+            var controller = new EnrolmentController(db);
             return (controller, db);
         }
     }
