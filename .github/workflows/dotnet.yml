@@ -13,24 +13,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-        
-    # 1. Restore the Main App
-    - name: Restore Main Project
-      run: dotnet restore ./Race_Day/Race_Day/Race_Day.csproj
-      
-    # 2. Restore the Test Project (This fixes the error in your text)
-    - name: Restore Test Project
-      run: dotnet restore ./Race_Day/Race_Day.Test/Race_Day.Test.csproj
-      
-    # 3. Build the Main App
-    - name: Build Main Project
-      run: dotnet build ./Race_Day/Race_Day/Race_Day.csproj --no-restore
-      
-    # 4. Test the Test Project
+
+    - name: Restore solution
+      run: dotnet restore ./RaceDay/RaceDay.sln
+
+    - name: Build solution
+      run: dotnet build ./RaceDay/RaceDay.sln --no-restore --configuration Release
+
     - name: Test
-      run: dotnet test ./Race_Day/Race_Day.Test/Race_Day.Test.csproj --no-restore --verbosity normal
+      run: dotnet test ./RaceDay/RaceDay.Tests/RaceDay.Tests.csproj --no-restore --verbosity normal
