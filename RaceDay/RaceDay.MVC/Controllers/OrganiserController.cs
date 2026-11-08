@@ -5,7 +5,7 @@ using RaceDay.MVC.Services;
 
 namespace RaceDay.MVC.Controllers;
 
-[SessionAuthorize(Role = "Organiser")]
+[SessionAuthorize(Role = "Admin")]
 public class OrganiserController : Controller
 {
     private readonly ApiService _api;
@@ -46,10 +46,12 @@ public class OrganiserController : Controller
             form.Add(file, "BannerImage", model.BannerImage.FileName);
         }
 
-        var (success, _) = await _api.PostFormAsync("api/events", form);
+        var (success, error) = await _api.PostFormAsync("api/events", form);
+
         if (!success)
         {
-            ModelState.AddModelError("", "Event creation failed.");
+           
+            ModelState.AddModelError("", $"API Error: {error ?? "Unknown error"}");
             return View(model);
         }
         TempData["Success"] = "Event created!";

@@ -21,7 +21,7 @@ public class ResultsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] ResultCreateDto dto)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var isOwner = await _db.Events.AnyAsync(e => e.Id == dto.EventId && e.OrganiserId == organiserId);
+        var isOwner = await _db.Events.AnyAsync(e => e.EventId == dto.EventId && e.OrganiserId == organiserId);
         if (!isOwner) return Forbid();
 
         var enrolmentExists = await _db.Enrolments.AnyAsync(e =>
@@ -58,7 +58,7 @@ public class ResultsController : ControllerBase
             .Where(r => r.ParticipantId == participantId)
             .Select(r => new ResultDto
             {
-                Id = r.Id, EventId = r.EventId, EventTitle = r.Event.Title,
+                Id = r.ResultId, EventId = r.EventId, EventTitle = r.Event.Title,
                 ParticipantId = r.ParticipantId, FinishTime = r.FinishTime,
                 FinishingPosition = r.FinishingPosition
             }).ToListAsync();
@@ -71,7 +71,7 @@ public class ResultsController : ControllerBase
     public async Task<IActionResult> EventResults(int eventId)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var isOwner = await _db.Events.AnyAsync(e => e.Id == eventId && e.OrganiserId == organiserId);
+        var isOwner = await _db.Events.AnyAsync(e => e.EventId == eventId && e.OrganiserId == organiserId);
         if (!isOwner) return Forbid();
 
         var results = await _db.Results
@@ -81,8 +81,8 @@ public class ResultsController : ControllerBase
             .OrderBy(r => r.FinishingPosition)
             .Select(r => new ResultDto
             {
-                Id = r.Id, EventId = r.EventId, EventTitle = r.Event.Title,
-                ParticipantId = r.ParticipantId, ParticipantName = r.Participant.Name,
+                Id = r.ResultId, EventId = r.EventId, EventTitle = r.Event.Title,
+                ParticipantId = r.ParticipantId, ParticipantName = r.Participant.ParticipantName,
                 FinishTime = r.FinishTime, FinishingPosition = r.FinishingPosition
             }).ToListAsync();
         return Ok(results);

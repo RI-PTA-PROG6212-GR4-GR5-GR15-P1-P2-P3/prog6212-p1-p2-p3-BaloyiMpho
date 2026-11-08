@@ -18,7 +18,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">🏃 RaceDay</a>
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">RaceDay</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,7 +30,7 @@
                     <li class="nav-item"><a class="nav-link" asp-controller="Events" asp-action="MyEnrolments">My Enrolments</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Events" asp-action="MyResults">My Results</a></li>
                 }
-                @if (Context.Session.GetString("UserRole") == "Organiser")
+                @if (Context.Session.GetString("UserRole") == "Admin")
                 {
                     <li class="nav-item"><a class="nav-link" asp-controller="Organiser" asp-action="Dashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Organiser" asp-action="CreateEvent">Create Event</a></li>

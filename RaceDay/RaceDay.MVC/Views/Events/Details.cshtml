@@ -9,10 +9,10 @@
         <h2>@Model.Title <span class="badge bg-primary fs-6">@Model.EventType</span></h2>
         <p class="text-muted">@Model.Description</p>
         <ul class="list-unstyled">
-            <li><strong>📅 Date:</strong> @Model.Date.ToString("dddd, dd MMM yyyy")</li>
-            <li><strong>📍 Location:</strong> @Model.Location</li>
-            <li><strong>🏃 Distance:</strong> @Model.Distance km</li>
-            <li><strong>👤 Organiser:</strong> @Model.OrganiserName</li>
+            <li><strong> &#128197; Date:</strong> @Model.Date.ToString("dddd, dd MMM yyyy")</li>
+            <li><strong> &#128205; Location:</strong> @Model.Location</li>
+            <li><strong> &#127939;Distance:</strong> @Model.Distance km</li>
+            <li><strong> &#128100; Organiser:</strong> @Model.OrganiserName</li>
         </ul>
         <h4 class="mt-4">Categories</h4>
         @if (Context.Session.GetString("UserRole") == "Participant")

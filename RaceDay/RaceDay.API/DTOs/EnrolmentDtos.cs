@@ -11,6 +11,7 @@ public class EnrolmentDto
     public int Id { get; set; }
     public int ParticipantId { get; set; }
     public string ParticipantName { get; set; } = null!;
+
     public int EventId { get; set; }
     public string EventTitle { get; set; } = null!;
     public int CategoryId { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,11 +17,12 @@ public class AuthController : ControllerBase
 {
     private readonly RaceDayDbContext _db;
     private readonly IConfiguration _config;
-
-    public AuthController(RaceDayDbContext db, IConfiguration config)
+    private IPasswordHasher<User> _hasher;
+    public AuthController(RaceDayDbContext db, IConfiguration config, IPasswordHasher<User> hasher)
     {
         _db = db;
         _config = config;
+        _hasher = hasher;
     }
 
     /// <summary>Register a new user (Organiser or Participant).</summary>
@@ -34,12 +36,14 @@ public class AuthController : ControllerBase
         {
             Name = dto.Name,
             Email = dto.Email,
-            Role = dto.Role,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+            Role = "Participant",
+            PasswordHash = null,
         };
+        user.PasswordHash = _hasher.HashPassword(user, dto.Password);
+
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        return Ok(new { message = "Registered successfully.", userId = user.Id });
+        return Ok(new { message = "Registered successfully.", userId = user.UserId });
     }
 
     /// <summary>Login and receive a JWT token.</summary>
@@ -47,8 +51,13 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+        if (user == null )
             return Unauthorized(new { message = "Invalid email or password." });
+        var PasswordHash = _hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+        if(PasswordHash == PasswordVerificationResult.Failed) 
+        {
+            return Unauthorized("Invalid email or password");
+        }
 
         var token = GenerateJwtToken(user);
         return Ok(new LoginResponseDto { Token = token, UserName = user.Name, Role = user.Role });
@@ -62,7 +71,7 @@ public class AuthController : ControllerBase
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, user.Role)

@@ -24,6 +24,7 @@ public class SessionAuthorizeAttribute : ActionFilterAttribute
                 context.Result = new RedirectToActionResult("Index", "Home", null);
                 return;
             }
+           
         }
         base.OnActionExecuting(context);
     }

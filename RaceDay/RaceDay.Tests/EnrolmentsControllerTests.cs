@@ -33,9 +33,9 @@ public class EnrolmentsControllerTests
     public async Task Enrol_ValidParticipant_ReturnsOk()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
-        db.Categories.Add(new Category { Id = 1, Name = "Senior", EventId = 1 });
+        db.Users.Add(new User { UserId = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
+        db.Categories.Add(new Category { CategoryId = 1, Name = "Senior", EventId = 1 });
         await db.SaveChangesAsync();
 
         var controller = WithUser(new EnrolmentsController(db), 1, "Participant");
@@ -49,9 +49,9 @@ public class EnrolmentsControllerTests
     public async Task Enrol_Duplicate_ReturnsBadRequest()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
-        db.Categories.Add(new Category { Id = 1, Name = "Senior", EventId = 1 });
+        db.Users.Add(new User { UserId = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
+        db.Categories.Add(new Category { CategoryId = 1, Name = "Senior", EventId = 1 });
         db.Enrolments.Add(new Enrolment { ParticipantId = 1, EventId = 1, CategoryId = 1, Status = "Pending" });
         await db.SaveChangesAsync();
 
@@ -64,10 +64,10 @@ public class EnrolmentsControllerTests
     public async Task Enrol_CategoryNotInEvent_ReturnsBadRequest()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
-        db.Events.Add(new Event { Id = 2, Title = "E2", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 5, EventType = "Walk", OrganiserId = 2 });
-        db.Categories.Add(new Category { Id = 1, Name = "Senior", EventId = 2 });
+        db.Users.Add(new User { UserId = 1, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 2 });
+        db.Events.Add(new Event { EventId = 2, Title = "E2", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 5, EventType = "Walk", OrganiserId = 2 });
+        db.Categories.Add(new Category { CategoryId = 1, Name = "Senior", EventId = 2 });
         await db.SaveChangesAsync();
 
         var controller = WithUser(new EnrolmentsController(db), 1, "Participant");

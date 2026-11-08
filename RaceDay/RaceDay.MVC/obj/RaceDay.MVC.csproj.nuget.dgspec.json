@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj": {}
+    "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj": {}
   },
   "projects": {
-    "C:\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj": {
+    "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj",
+        "projectUniqueName": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj",
         "projectName": "RaceDay.MVC",
-        "projectPath": "C:\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj",
-        "packagesPath": "C:\\Users\\BALOYI MPHO\\.nuget\\packages\\",
-        "outputPath": "C:\\RaceDay\\RaceDay.MVC\\obj\\",
+        "projectPath": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.MVC\\RaceDay.MVC.csproj",
+        "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.MVC\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\BALOYI MPHO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Student\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -30,7 +30,6 @@
         },
         "frameworks": {
           "net8.0": {
-            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -45,11 +44,10 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
-          "framework": "net8.0",
           "targetAlias": "net8.0",
           "imports": [
             "net461",
@@ -70,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.310/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RaceDay.API.Data;
 using RaceDay.API.Services;
+using Microsoft.Extensions.Azure;
+using Microsoft.AspNetCore.Identity;
+using RaceDay.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +62,14 @@ builder.Services.AddCors(options =>
         .WithOrigins("https://localhost:5003", "http://localhost:5002")
         .AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 });
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["StorageConnectionString:blobServiceUri"]!).WithName("StorageConnectionString");
+    clientBuilder.AddQueueServiceClient(builder.Configuration["StorageConnectionString:queueServiceUri"]!).WithName("StorageConnectionString");
+    clientBuilder.AddTableServiceClient(builder.Configuration["StorageConnectionString:tableServiceUri"]!).WithName("StorageConnectionString");
+});
+builder.Services.AddScoped<IPasswordHasher<User>,
+    PasswordHasher<User>>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
@@ -67,10 +78,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<RaceDayDbContext>();
-    db.Database.EnsureCreated();
-}
+
 
 app.Run();

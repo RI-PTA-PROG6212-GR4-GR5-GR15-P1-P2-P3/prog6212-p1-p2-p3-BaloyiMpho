@@ -21,10 +21,10 @@ public class EnrolmentsController : ControllerBase
     public async Task<IActionResult> Enrol([FromBody] EnrolmentCreateDto dto)
     {
         var participantId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var eventExists = await _db.Events.AnyAsync(e => e.Id == dto.EventId);
+        var eventExists = await _db.Events.AnyAsync(e => e.EventId == dto.EventId);
         if (!eventExists) return BadRequest(new { message = "Event not found." });
 
-        var categoryExists = await _db.Categories.AnyAsync(c => c.Id == dto.CategoryId && c.EventId == dto.EventId);
+        var categoryExists = await _db.Categories.AnyAsync(c => c.CategoryId == dto.CategoryId && c.EventId == dto.EventId);
         if (!categoryExists) return BadRequest(new { message = "Category does not belong to this event." });
 
         var exists = await _db.Enrolments.AnyAsync(e =>
@@ -38,9 +38,11 @@ public class EnrolmentsController : ControllerBase
             CategoryId = dto.CategoryId,
             Status = "Pending"
         };
+       
         _db.Enrolments.Add(enrolment);
+       
         await _db.SaveChangesAsync();
-        return Ok(new { enrolment.Id, enrolment.Status, message = "Enrolment submitted." });
+        return Ok(new { enrolment.EnrolmentId, enrolment.Status, message = "Enrolment submitted." });
     }
 
     /// <summary>Get current participant's enrolments.</summary>
@@ -55,7 +57,7 @@ public class EnrolmentsController : ControllerBase
             .Where(e => e.ParticipantId == participantId)
             .Select(e => new EnrolmentDto
             {
-                Id = e.Id, ParticipantId = e.ParticipantId, EventId = e.EventId,
+                Id = e.EnrolmentId, ParticipantId = e.ParticipantId, EventId = e.EventId,
                 EventTitle = e.Event.Title, CategoryId = e.CategoryId,
                 CategoryName = e.Category.Name, EnrolmentDate = e.EnrolmentDate,
                 Status = e.Status
@@ -69,7 +71,7 @@ public class EnrolmentsController : ControllerBase
     public async Task<IActionResult> EventEnrolments(int eventId)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var isOwner = await _db.Events.AnyAsync(e => e.Id == eventId && e.OrganiserId == organiserId);
+        var isOwner = await _db.Events.AnyAsync(e => e.EventId == eventId && e.OrganiserId == organiserId);
         if (!isOwner) return Forbid();
 
         var list = await _db.Enrolments
@@ -79,7 +81,7 @@ public class EnrolmentsController : ControllerBase
             .Where(e => e.EventId == eventId)
             .Select(e => new EnrolmentDto
             {
-                Id = e.Id, ParticipantId = e.ParticipantId,
+                Id = e.EnrolmentId, ParticipantId = e.ParticipantId,
                 ParticipantName = e.Participant.Name, EventId = e.EventId,
                 EventTitle = e.Event.Title, CategoryId = e.CategoryId,
                 CategoryName = e.Category.Name, EnrolmentDate = e.EnrolmentDate,
@@ -94,7 +96,7 @@ public class EnrolmentsController : ControllerBase
     public async Task<IActionResult> Confirm(int id)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var enrolment = await _db.Enrolments.Include(e => e.Event).FirstOrDefaultAsync(e => e.Id == id);
+        var enrolment = await _db.Enrolments.Include(e => e.Event).FirstOrDefaultAsync(e => e.EventId == id);
         if (enrolment == null) return NotFound();
         if (enrolment.Event.OrganiserId != organiserId) return Forbid();
 

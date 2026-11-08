@@ -3,7 +3,8 @@ namespace RaceDay.API.Models;
 
 public class Category
 {
-    public int Id { get; set; }
+    [Key]
+    public int CategoryId { get; set; }
     [Required, MaxLength(100)] public string Name { get; set; } = null!;
     public int EventId { get; set; }
     public Event Event { get; set; } = null!;

@@ -32,7 +32,7 @@ public class EventsController : ControllerBase
 
         var events = await query.OrderBy(e => e.Date).Select(e => new EventListDto
         {
-            Id = e.Id, Title = e.Title, Description = e.Description, Date = e.Date,
+            Id = e.EventId, Title = e.Title, Description = e.Description, Date = e.Date,
             Location = e.Location, Distance = e.Distance, EventType = e.EventType,
             BannerImageUrl = e.BannerImageUrl, OrganiserName = e.Organiser.Name,
             OrganiserId = e.OrganiserId
@@ -47,20 +47,20 @@ public class EventsController : ControllerBase
         var ev = await _db.Events
             .Include(e => e.Organiser)
             .Include(e => e.Categories)
-            .FirstOrDefaultAsync(e => e.Id == id);
+            .FirstOrDefaultAsync(e => e.EventId == id);
         if (ev == null) return NotFound(new { message = "Event not found." });
 
         return Ok(new
         {
-            ev.Id, ev.Title, ev.Description, ev.Date, ev.Location, ev.Distance,
+            ev.EventId, ev.Title, ev.Description, ev.Date, ev.Location, ev.Distance,
             ev.EventType, ev.BannerImageUrl, ev.OrganiserId,
             OrganiserName = ev.Organiser.Name,
-            Categories = ev.Categories.Select(c => new { c.Id, c.Name })
+            Categories = ev.Categories.Select(c => new { c.EventId, c.Name })
         });
     }
 
     /// <summary>Create a new event (Organiser only). Accepts multipart/form-data with optional banner image.</summary>
-    [Authorize(Roles = "Organiser")]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] EventCreateDto dto)
     {
@@ -85,20 +85,20 @@ public class EventsController : ControllerBase
         if (dto.Categories != null)
         {
             foreach (var catName in dto.Categories.Where(c => !string.IsNullOrWhiteSpace(c)))
-                _db.Categories.Add(new Category { Name = catName, EventId = ev.Id });
+                _db.Categories.Add(new Category { Name = catName, EventId = ev.EventId });
             await _db.SaveChangesAsync();
         }
 
-        return CreatedAtAction(nameof(Get), new { id = ev.Id }, new { ev.Id, ev.Title });
+        return CreatedAtAction(nameof(Get), new { id = ev.EventId }, new { ev.EventId, ev.Title });
     }
 
     /// <summary>Update an event (Organiser only, must own event).</summary>
-    [Authorize(Roles = "Organiser")]
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] EventUpdateDto dto)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var ev = await _db.Events.FirstOrDefaultAsync(e => e.Id == id);
+        var ev = await _db.Events.FirstOrDefaultAsync(e => e.EventId == id);
         if (ev == null) return NotFound();
         if (ev.OrganiserId != organiserId) return Forbid();
 
@@ -109,12 +109,12 @@ public class EventsController : ControllerBase
     }
 
     /// <summary>Delete an event (Organiser only, must own event).</summary>
-    [Authorize(Roles = "Organiser")]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var organiserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var ev = await _db.Events.FirstOrDefaultAsync(e => e.Id == id);
+        var ev = await _db.Events.FirstOrDefaultAsync(e => e.EventId == id);
         if (ev == null) return NotFound();
         if (ev.OrganiserId != organiserId) return Forbid();
 
@@ -127,7 +127,7 @@ public class EventsController : ControllerBase
     }
 
     /// <summary>Get events owned by the current organiser.</summary>
-    [Authorize(Roles = "Organiser")]
+    [Authorize(Roles = "Admin")]
     [HttpGet("my-events")]
     public async Task<IActionResult> MyEvents()
     {

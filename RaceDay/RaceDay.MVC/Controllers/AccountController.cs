@@ -17,23 +17,21 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
-        var (data, error) = await _api.PostAndReadAsync<LoginResult>("api/auth/login",
-            new { model.Email, model.Password });
-        if (data == null)
+        var (data, error) = await _api.PostAndReadAsync<LoginResult>("api/auth/login", model);
+
+        if (data == null || string.IsNullOrEmpty(data.Token))
         {
-            ModelState.AddModelError("", "Invalid email or password.");
+            ModelState.AddModelError("", error ?? "Invalid email or password.");
             return View(model);
         }
 
+       
         HttpContext.Session.SetString("JWToken", data.Token);
         HttpContext.Session.SetString("UserRole", data.Role);
         HttpContext.Session.SetString("UserName", data.UserName);
 
-        return data.Role == "Organiser"
-            ? RedirectToAction("Dashboard", "Organiser")
-            : RedirectToAction("Index", "Events");
+        return RedirectToAction("Index", "Events");
     }
-
     [HttpGet]
     public IActionResult Register() => View(new RegisterViewModel());
 

@@ -33,10 +33,10 @@ public class ResultsControllerTests
     public async Task Create_ValidOrganiser_ReturnsOk()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
-        db.Users.Add(new User { Id = 2, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
-        db.Categories.Add(new Category { Id = 1, Name = "Senior", EventId = 1 });
+        db.Users.Add(new User { UserId = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
+        db.Users.Add(new User { UserId = 2, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
+        db.Categories.Add(new Category { CategoryId = 1, Name = "Senior", EventId = 1 });
         db.Enrolments.Add(new Enrolment { ParticipantId = 2, EventId = 1, CategoryId = 1, Status = "Confirmed" });
         await db.SaveChangesAsync();
 
@@ -55,11 +55,11 @@ public class ResultsControllerTests
     public async Task Create_NotOwner_ReturnsForbid()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
-        db.Users.Add(new User { Id = 2, Name = "O2", Email = "o2@t.com", PasswordHash = "h", Role = "Organiser" });
-        db.Users.Add(new User { Id = 3, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
-        db.Categories.Add(new Category { Id = 1, Name = "Senior", EventId = 1 });
+        db.Users.Add(new User { UserId = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
+        db.Users.Add(new User { UserId = 2, Name = "O2", Email = "o2@t.com", PasswordHash = "h", Role = "Organiser" });
+        db.Users.Add(new User { UserId = 3, Name = "P", Email = "p@t.com", PasswordHash = "h", Role = "Participant" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
+        db.Categories.Add(new Category { CategoryId = 1, Name = "Senior", EventId = 1 });
         db.Enrolments.Add(new Enrolment { ParticipantId = 3, EventId = 1, CategoryId = 1, Status = "Confirmed" });
         await db.SaveChangesAsync();
 
@@ -77,8 +77,8 @@ public class ResultsControllerTests
     public async Task Create_ParticipantNotEnrolled_ReturnsBadRequest()
     {
         var db = GetDb();
-        db.Users.Add(new User { Id = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
-        db.Events.Add(new Event { Id = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
+        db.Users.Add(new User { UserId = 1, Name = "O", Email = "o@t.com", PasswordHash = "h", Role = "Organiser" });
+        db.Events.Add(new Event { EventId = 1, Title = "E", Description = "D", Date = DateTime.UtcNow, Location = "L", Distance = 10, EventType = "Run", OrganiserId = 1 });
         await db.SaveChangesAsync();
 
         var controller = WithUser(new ResultsController(db), 1, "Organiser");

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RaceDay.API</name>
+    </assembly>
+    <members>
+        <member name="M:RaceDay.API.Controllers.AuthController.Register(RaceDay.API.DTOs.RegisterDto)">
+            <summary>Register a new user (Organiser or Participant).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.AuthController.Login(RaceDay.API.DTOs.LoginDto)">
+            <summary>Login and receive a JWT token.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EnrolmentsController.Enrol(RaceDay.API.DTOs.EnrolmentCreateDto)">
+            <summary>Enrol in an event category (Participant only).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EnrolmentsController.MyEnrolments">
+            <summary>Get current participant's enrolments.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EnrolmentsController.EventEnrolments(System.Int32)">
+            <summary>Get enrolments for a specific event (Organiser only, must own event).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EnrolmentsController.Confirm(System.Int32)">
+            <summary>Confirm an enrolment (Organiser only, must own event).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.GetAll(System.String)">
+            <summary>Get all events, optionally filtered by eventType (Run, Walk, Cycle).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.Get(System.Int32)">
+            <summary>Get a single event with its categories.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.Create(RaceDay.API.DTOs.EventCreateDto)">
+            <summary>Create a new event (Organiser only). Accepts multipart/form-data with optional banner image.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.Update(System.Int32,RaceDay.API.DTOs.EventUpdateDto)">
+            <summary>Update an event (Organiser only, must own event).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.Delete(System.Int32)">
+            <summary>Delete an event (Organiser only, must own event).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.EventsController.MyEvents">
+            <summary>Get events owned by the current organiser.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.ResultsController.Create(RaceDay.API.DTOs.ResultCreateDto)">
+            <summary>Record a result (Organiser only, must own event).</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.ResultsController.MyResults">
+            <summary>Get current participant's results.</summary>
+        </member>
+        <member name="M:RaceDay.API.Controllers.ResultsController.EventResults(System.Int32)">
+            <summary>Get results for an event (Organiser only, must own event).</summary>
+        </member>
+        <member name="T:RaceDay.API.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:RaceDay.API.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RaceDay.API.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:RaceDay.API.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

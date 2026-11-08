@@ -5,11 +5,14 @@ using RaceDay.MVC.Services;
 
 namespace RaceDay.MVC.Controllers;
 
+[SessionAuthorize]
 public class EventsController : Controller
 {
     private readonly ApiService _api;
+
     public EventsController(ApiService api) => _api = api;
 
+   
     public async Task<IActionResult> Index(string? eventType)
     {
         var url = "api/events" + (string.IsNullOrEmpty(eventType) ? "" : $"?eventType={eventType}");
@@ -18,6 +21,7 @@ public class EventsController : Controller
         return View(events);
     }
 
+    
     public async Task<IActionResult> Details(int id)
     {
         var ev = await _api.GetAsync<EventViewModel>($"api/events/{id}");
@@ -25,17 +29,21 @@ public class EventsController : Controller
         return View(ev);
     }
 
+   
     [SessionAuthorize(Role = "Participant")]
     [HttpPost]
     public async Task<IActionResult> Enrol(int eventId, int categoryId)
     {
         var (success, _) = await _api.PostAsync("api/enrolments",
             new { EventId = eventId, CategoryId = categoryId });
+
         TempData[success ? "Success" : "Error"] = success
             ? "Enrolment submitted!"
             : "Enrolment failed (may already exist).";
+
         return RedirectToAction(success ? "MyEnrolments" : "Details", success ? null : new { id = eventId });
     }
+
 
     [SessionAuthorize(Role = "Participant")]
     public async Task<IActionResult> MyEnrolments()
@@ -44,6 +52,7 @@ public class EventsController : Controller
         return View(enrolments);
     }
 
+   
     [SessionAuthorize(Role = "Participant")]
     public async Task<IActionResult> MyResults()
     {

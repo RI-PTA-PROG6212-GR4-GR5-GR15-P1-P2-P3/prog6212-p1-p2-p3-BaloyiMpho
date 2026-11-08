@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\RaceDay\\RaceDay.API\\RaceDay.API.csproj": {}
+    "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.API\\RaceDay.API.csproj": {}
   },
   "projects": {
-    "C:\\RaceDay\\RaceDay.API\\RaceDay.API.csproj": {
+    "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.API\\RaceDay.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\RaceDay\\RaceDay.API\\RaceDay.API.csproj",
+        "projectUniqueName": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.API\\RaceDay.API.csproj",
         "projectName": "RaceDay.API",
-        "projectPath": "C:\\RaceDay\\RaceDay.API\\RaceDay.API.csproj",
-        "packagesPath": "C:\\Users\\BALOYI MPHO\\.nuget\\packages\\",
-        "outputPath": "C:\\RaceDay\\RaceDay.API\\obj\\",
+        "projectPath": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.API\\RaceDay.API.csproj",
+        "packagesPath": "C:\\Users\\Student\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Student\\source\\repos\\prog6212-p1-p2-p3-BaloyiMpho\\RaceDay\\RaceDay.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\BALOYI MPHO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Student\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -30,7 +30,6 @@
         },
         "frameworks": {
           "net8.0": {
-            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -45,16 +44,27 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.400"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
-          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
+            "Azure.Data.Tables": {
+              "target": "Package",
+              "version": "[12.10.0, )"
+            },
             "Azure.Storage.Blobs": {
               "target": "Package",
-              "version": "[12.19.1, )"
+              "version": "[12.24.0, )"
+            },
+            "Azure.Storage.Files.Shares": {
+              "target": "Package",
+              "version": "[12.22.0, )"
+            },
+            "Azure.Storage.Queues": {
+              "target": "Package",
+              "version": "[12.22.0, )"
             },
             "BCrypt.Net-Next": {
               "target": "Package",
@@ -80,6 +90,14 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.Extensions.Azure": {
+              "target": "Package",
+              "version": "[1.11.0, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.22.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -104,7 +122,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.310/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
