@@ -1,0 +1,49 @@
+﻿@model EventViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="card shadow">
+    @if (!string.IsNullOrEmpty(Model.BannerImageUrl))
+    {
+        <img src="@Model.BannerImageUrl" class="card-img-top" style="max-height:300px;object-fit:cover;" />
+    }
+    <div class="card-body">
+        <h2>@Model.Title <span class="badge bg-primary fs-6">@Model.EventType</span></h2>
+        <p class="text-muted">@Model.Description</p>
+        <ul class="list-unstyled">
+            <li><strong> 📅 Date:</strong> @Model.Date.ToString("dddd, dd MMM yyyy")</li>
+            <li><strong> 📍 Location:</strong> @Model.Location</li>
+            <li><strong> 🏃 Distance:</strong> @Model.Distance km</li>
+            <li><strong> 👤 Organiser:</strong> @Model.OrganiserName</li>
+        </ul>
+    </div>
+</div>
+
+@if (Model.Categories != null && Model.Categories.Any())
+{
+    <h3 class="mt-4">Enrol in this Event</h3>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Enrol" method="post">
+                <input type="hidden" name="eventId" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label">Select Category:</label>
+                    <select name="categoryId" class="form-select" required>
+                        <option value="">-- Choose a category --</option>
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Enrol Now</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-4">No enrolment categories are available for this event yet.</div>
+}

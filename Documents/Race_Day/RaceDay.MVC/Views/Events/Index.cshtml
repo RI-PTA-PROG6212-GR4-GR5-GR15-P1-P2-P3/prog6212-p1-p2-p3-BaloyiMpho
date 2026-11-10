@@ -1,0 +1,39 @@
+﻿@model List<EventViewModel>
+@{ ViewData["Title"] = "Events"; }
+<h2 class="mb-4">Upcoming Events</h2>
+<form method="get" class="mb-4 d-flex gap-2">
+    <select name="eventType" class="form-select w-auto">
+        <option value="">All Types</option>
+        <option value="Run" selected="@(ViewBag.EventType == "Run")">Run</option>
+        <option value="Walk" selected="@(ViewBag.EventType == "Walk")">Walk</option>
+        <option value="Cycle" selected="@(ViewBag.EventType == "Cycle")">Cycle</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<div class="row g-4">
+    @foreach (var ev in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-event h-100 shadow-sm">
+                @if (!string.IsNullOrEmpty(ev.BannerImageUrl))
+                {
+                    <img src="@ev.BannerImageUrl" class="card-img-top" style="height:180px;object-fit:cover;" alt="@ev.Title" />
+                }
+                <div class="card-body">
+                    <span class="badge bg-primary mb-2">@ev.EventType</span>
+                    <h5 class="card-title">@ev.Title</h5>
+                    <p class="card-text text-muted small">@ev.Description</p>
+                    <p class="mb-1"><strong> &#128197;</strong> @ev.Date.ToString("dd MMM yyyy")</p>
+                    <p class="mb-1"><strong> &#128205;</strong> @ev.Location</p>
+                    <p class="mb-1"><strong> &#127939;</strong> @ev.Distance km — @ev.OrganiserName</p>
+                </div>
+                <div class="card-footer">
+                <a asp-action="Details" asp-route-id="@ev.Id" class="btn btn-outline-primary w-100">View Details</a>
+                   
+                </div>
+
+            </div>
+        </div>
+    }
+    @if (!Model.Any()) { <p class="text-muted">No events found.</p> }
+</div>
