@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "RaceDay.API\\RaceDay.API.csproj",
+        "Action": "Start",
+        "DebugTarget": "IIS Express"
+      },
+      {
+        "Path": "RaceDay.MVC\\RaceDay.MVC.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

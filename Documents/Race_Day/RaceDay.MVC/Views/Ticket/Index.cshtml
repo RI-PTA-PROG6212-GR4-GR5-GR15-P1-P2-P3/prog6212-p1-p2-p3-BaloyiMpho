@@ -1,0 +1,71 @@
+﻿@model List<RaceDay.MVC.Models.EventViewModel>
+@{
+    ViewData["Title"] = "My Tickets";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Tickets</h1>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4 class="mb-3">No tickets found!</h4>
+            <p>You haven't registered for any events yet.</p>
+            <a asp-controller="Event" asp-action="Index" class="btn btn-primary mt-2">Browse Events</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var ticket in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <!-- Ticket Header -->
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">@ticket.Title</h5>
+                        </div>
+
+                      
+                        <div class="card-body">
+                            <p class="mb-1"><strong>Date:</strong> @ticket.Date.ToString("dd MMM yyyy")</p>
+                            <p class="mb-1"><strong>Location:</strong> @ticket.Location</p>
+                            <p class="mb-3"><strong>Category:</strong> @ticket.Categories</p>
+
+                            <!-- Payment Status Badge -->
+                            @if (ticket.IsPaid)
+                            {
+                                <span class="badge bg-success mb-3">Paid</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger mb-3">Payment Pending</span>
+                            }
+                        </div>
+
+                        
+                        <div class="card-footer bg-white border-top-0 d-grid gap-2 pb-3">
+                            @if (!ticket.IsPaid)
+                            {
+                                <a asp-controller="Payment" asp-action="Index" asp-route-ticketId="@ticket.Id" class="btn btn-success">
+                                    Pay Now
+                                </a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-success" disabled>Payment Complete</button>
+                            }
+
+                            <a asp-controller="Ticket" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-outline-primary">
+                                View Ticket Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

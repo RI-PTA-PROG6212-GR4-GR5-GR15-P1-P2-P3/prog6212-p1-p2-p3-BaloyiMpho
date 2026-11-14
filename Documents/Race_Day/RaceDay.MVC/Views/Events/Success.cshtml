@@ -1,0 +1,42 @@
+﻿@model RaceDay.MVC.Models.TicketConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Enrolment Submitted";
+}
+
+<h1>@(string.IsNullOrEmpty(Model.Message) ? "Enrolment submitted." : Model.Message)</h1>
+
+<div class="card mt-4">
+    <div class="card-header">
+        Ticket <strong>@Model.TicketNumber</strong>
+        <span class="badge bg-warning text-dark ms-2">@Model.PaymentStatus</span>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">@Model.EventName</h5>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Enrolment #</dt>
+            <dd class="col-sm-9">@Model.EnrolmentId</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Model.Status</dd>
+
+            <dt class="col-sm-3">Ticket type</dt>
+            <dd class="col-sm-9">@Model.TicketType</dd>
+
+            <dt class="col-sm-3">Category</dt>
+            <dd class="col-sm-9">@Model.CategoryName</dd>
+
+            <dt class="col-sm-3">Price</dt>
+            <dd class="col-sm-9">@Model.Price.ToString("C")</dd>
+
+            <dt class="col-sm-3">Location</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Events" asp-action="MyTickets" class="btn btn-primary">My tickets</a>
+    <a asp-controller="Events" asp-action="Index" class="btn btn-secondary">Enrol in another event</a>
+</div>
