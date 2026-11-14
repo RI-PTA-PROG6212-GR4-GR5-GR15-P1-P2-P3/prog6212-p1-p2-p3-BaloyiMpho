@@ -3,7 +3,8 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mr-hqvA6)
 
 ---
-
+## Video
+[![RaceDay Demo Video](https://img.youtube.com/vi/GzHmVfJZ1lk/hqdefault.jpg)](https://www.youtube.com/watch?v=GzHmVfJZ1lk)
 ## Overview
 
 The **RaceDay System** is a comprehensive event management database designed for **running, walking, and cycling events** in South Africa. This database schema supports the complete management of events, including:
