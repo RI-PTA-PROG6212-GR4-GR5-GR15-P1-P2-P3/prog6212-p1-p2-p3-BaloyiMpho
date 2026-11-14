@@ -243,15 +243,31 @@ A robust **C# ASP.NET Core Web API** designed for managing race day events, part
 ##  Project Structure
 
 The repository is organized into the following structure:
-```text
-├── .github/workflows/    # GitHub Actions CI pipeline (dotnet.yml)
-├── Race_Day/             # Main ASP.NET Core API Project
-│   ├── Controllers/      # API Endpoints
-│   ├── Migrations/       # EF Core Database Migrations
-│   └── Race_Day.csproj
-└── Race_Day.Test/        # Unit Test Project
+├── .github/workflows/
+│   └── dotnet.yml
+├── RaceDay.API/
+│   ├── Controllers/
+│   ├── Data/
+│   ├── Migrations/
+│   ├── Models/
+│   ├── Services/
+│   ├── appsettings.json
+│   └── RaceDay.API.csproj
+├── RaceDay.MVC/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Services/
+│   ├── Views/
+│   │   ├── Account/
+│   │   ├── Events/
+│   │   ├── Payment/
+│   │   └── Shared/
+│   ├── wwwroot/
+│   ├── Attributes/
+│   ├── appsettings.json
+│   └── RaceDay.MVC.csproj
+└── Race_Day.Test/
     └── Race_Day.Test.csproj
-## License
 
 This project is for educational purposes only. All rights reserved.
 
