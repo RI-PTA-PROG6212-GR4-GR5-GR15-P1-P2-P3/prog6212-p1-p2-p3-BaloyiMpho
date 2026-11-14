@@ -240,6 +240,9 @@ A robust **C# ASP.NET Core Web API** designed for managing race day events, part
 ## Unit Test 
 ![prog6212-p1-p2-p3-BaloyiMpho](Documents/UnitTest_Result.png)
 
+## Project 
+![prog6212-p1-p2-p3-BaloyiMpho](Documents/Project.png)
+
 ##  Project Structure
 
 The repository is organized into the following structure:
