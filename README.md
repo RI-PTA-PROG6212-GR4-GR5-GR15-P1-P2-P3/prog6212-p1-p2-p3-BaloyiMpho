@@ -243,6 +243,7 @@ A robust **C# ASP.NET Core Web API** designed for managing race day events, part
 ##  Project Structure
 
 The repository is organized into the following structure:
+```text
 ├── .github/workflows/
 │   └── dotnet.yml
 ├── RaceDay.API/
