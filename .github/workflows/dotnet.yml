@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Restore solution
-      run: dotnet restore ./RaceDay/RaceDay.sln
+      run: dotnet restore ./Documents/Race_Day/RaceDay.sln
 
     - name: Build solution
-      run: dotnet build ./RaceDay/RaceDay.sln --no-restore --configuration Release
+      run: dotnet build ./Documents/Race_Day/RaceDay.sln --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test ./RaceDay/RaceDay.Tests/RaceDay.Tests.csproj --no-restore --verbosity normal
+      run: dotnet test ./Documents/Race_Day/RaceDay.Tests/RaceDay.Tests.csproj --no-restore --verbosity normal
